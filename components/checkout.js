@@ -50,6 +50,15 @@ function closeCheckoutModal() {
 // actually owes. The client never computes or trusts its own totals.
 async function calculateCheckout(region) {
   const items = state.cart.map(item => ({ id: item.id, qty: item.qty, size: item.size }));
+  const catalog = await loadData();
+  const unavailableItems = items.filter(item => {
+    const product = catalog?.products.find(candidate => candidate.id === item.id);
+    return !product?.dbId;
+  });
+
+  if (unavailableItems.length) {
+    throw new Error('preview-catalog-items');
+  }
 
   const { data, error } = await supabase.functions.invoke('rm-store-create-checkout', {
     body: { items, region: region || null }
@@ -85,9 +94,13 @@ async function renderCheckoutForm() {
     checkoutData = await calculateCheckout(customer.region);
   } catch (error) {
     console.error('Failed to calculate checkout total:', error);
+    const hasPreviewItems = error.message === 'preview-catalog-items';
     body.innerHTML = `
       <div class="empty-state">
-        <p>Unable to calculate your total right now. Please refresh and try again.</p>
+        <p>${hasPreviewItems
+          ? 'These shoes are preview items and have not been added to the live checkout catalog yet.'
+          : 'Unable to calculate your total right now. Please refresh and try again.'}</p>
+        ${hasPreviewItems ? '<a href="https://wa.me/233546737798" target="_blank" rel="noopener noreferrer"><b>Contact NxNx Tech</b></a>' : ''}
       </div>
     `;
     return;
@@ -130,11 +143,11 @@ async function renderCheckoutForm() {
       <div class="form-row">
         <div class="form-group">
           <label for="checkout-name">Full Name</label>
-          <input type="text" id="checkout-name" required placeholder="Roger McDaniels" value="${customer.name || ''}">
+          <input type="text" id="checkout-name" required placeholder="Your full name" value="${customer.name || ''}">
         </div>
         <div class="form-group">
           <label for="checkout-email">Email</label>
-          <input type="email" id="checkout-email" required placeholder="rm@example.com" value="${customer.email || ''}">
+          <input type="email" id="checkout-email" required placeholder="you@example.com" value="${customer.email || ''}">
         </div>
       </div>
       <div class="form-group">
@@ -267,7 +280,7 @@ function renderPaystackStep() {
         <div class="paystack-brand"><span>Pay</span>stack</div>
         <span class="paystack-secure">${getIcon('shield-check')} Secure Payment</span>
       </div>
-      <p class="paystack-merchant">Pay <strong>Roger McDaniels</strong> / <strong>NxNx Tech</strong></p>
+      <p class="paystack-merchant">Pay <strong>The Sneaker Yard</strong> / <strong>NxNx Tech</strong></p>
       <p class="paystack-amount">${formatPrice(grandTotal)}</p>
       <p class="paystack-email">${customer.email}</p>
 
@@ -674,7 +687,7 @@ function buildReceiptText(order) {
   });
 
   const lines = [
-    'ROGER MCDANIELS — ORDER RECEIPT',
+    'THE SNEAKER YARD — ORDER RECEIPT',
     '================================',
     `Order #: ${order.id}`,
     `Date: ${orderDate}`,
@@ -696,7 +709,7 @@ function buildReceiptText(order) {
     `Delivery Fee: ${order.shippingFee === 0 ? 'Free' : formatPrice(order.shippingFee)}`,
     `Total Paid: ${formatPrice(order.total)}`,
     '',
-    'Thank you for shopping with Roger McDaniels.'
+    'Thank you for shopping with The Sneaker Yard.'
   ];
 
   return lines.join('\n');

@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Roger McDaniels</title>
-  <link rel="icon" type="image/png" href="../assets/rm-logo.jpg">
+  <title>Contact | The Sneaker Yard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/main.css">
+<link rel="icon" type="image/x-icon" href="../assets/logo.png">
   <style>
     .contact-hero {
       background: linear-gradient(135deg, #d4d4d4 0%, #e8e8e8 50%, #c8c8c8 100%);
@@ -194,8 +194,8 @@
 
 <section class="contact-hero">
   <div class="contact-hero-inner">
-    <h1 id="contact-title">Hola Me!!</h1>
-    <p id="contact-subtitle">I'd love to hear from you.</p>
+    <h1 id="contact-title">Let’s find your next pair</h1>
+    <p id="contact-subtitle">Questions about fit, orders, or a favorite style? The Sneaker Yard team is here to help.</p>
   </div>
 </section>
 
@@ -245,16 +245,16 @@
         <div class="form-row">
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" required placeholder="Roger">
+            <input type="text" id="firstName" name="firstName" required placeholder="First name">
           </div>
           <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" required placeholder="McDaniels">
+            <input type="text" id="lastName" name="lastName" required placeholder="Last name">
           </div>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="rm@example.com">
+          <input type="email" id="email" name="email" required placeholder="you@example.com">
         </div>
         <div class="form-group">
           <label for="subject">Subject</label>
@@ -326,8 +326,9 @@
         if (el && value) el.textContent = value;
       };
 
-      setText('contact-title', contact.title);
-      setText('contact-subtitle', contact.subtitle);
+      const brandSafeCopy = value => value && !/(\brm\b|roger|mcdaniels|hola me)/i.test(value);
+      if (brandSafeCopy(contact.title)) setText('contact-title', contact.title);
+      if (brandSafeCopy(contact.subtitle)) setText('contact-subtitle', contact.subtitle);
       setText('contact-email', contact.email);
       setText('contact-phone', contact.phone);
       setText('contact-hours', contact.hours);

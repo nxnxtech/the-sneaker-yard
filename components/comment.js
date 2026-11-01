@@ -4,9 +4,13 @@ async function initCommentsSection() {
 
   section.innerHTML = `
     <div class="section-header fade-in">
-      <h2 class="section-title">Chat</h2>
-      <button class="btn btn-glass btn-sm add-comment-toggle" id="add-comment-toggle" onclick="toggleCommentForm()">
-        ${getIcon('plus')} Add Comment
+        <div class="community-heading">
+          <p class="community-eyebrow">THE SNEAKER YARD COMMUNITY</p>
+          <h2 class="section-title">Sole Stories</h2>
+          <p class="community-intro">Real reviews from people wearing their pairs every day.</p>
+        </div>
+        <button class="btn btn-glass btn-sm add-comment-toggle" id="add-comment-toggle" onclick="toggleCommentForm()">
+          ${getIcon('plus')} Write a Review
       </button>
     </div>
     <div class="comments-wrap fade-in">
@@ -14,7 +18,7 @@ async function initCommentsSection() {
         <div class="form-row">
           <div class="form-group">
             <label for="comment-name">Name</label>
-            <input type="text" id="comment-name" name="name" required placeholder="Your name">
+              <input type="text" id="comment-name" name="name" required placeholder="Name shown with your review">
           </div>
           <div class="form-group">
             <label for="comment-rating">Rating</label>
@@ -28,11 +32,11 @@ async function initCommentsSection() {
           </div>
         </div>
         <div class="form-group">
-          <label for="comment-message">Comment</label>
-          <textarea id="comment-message" name="message" required placeholder="Share your thoughts..."></textarea>
+          <label for="comment-message">Your Review</label>
+          <textarea id="comment-message" name="message" required placeholder="How did your new pair fit and feel?"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">
-          Post Comment
+          Share Review
           ${getIcon('send')}
         </button>
       </form>
@@ -108,7 +112,8 @@ async function renderComments() {
   const comments = await loadComments();
 
   if (comments.length === 0) {
-    list.innerHTML = `<p class="comment-empty">Be the first to leave a comment.</p>`;
+    list.innerHTML = `<p class="comment-empty">Be the first to share a review with The Sneaker Yard community.</p>`;
+      showToast('Review posted!', 'success');
     return;
   }
 

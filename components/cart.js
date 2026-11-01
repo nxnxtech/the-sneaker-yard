@@ -151,7 +151,10 @@ function initCartModal() {
       <div class="cart-modal">
         <div class="cart-modal-header">
           <h3>${getIcon('shopping-bag')} Your Cart</h3>
-          <button class="cart-modal-close" aria-label="Close cart">${getIcon('close')}</button>
+          <div class="cart-modal-header-actions">
+            <button class="cart-clear-btn" id="cart-clear-btn" onclick="clearCart()">${getIcon('trash')} Clear all</button>
+            <button class="cart-modal-close" aria-label="Close cart">${getIcon('close')}</button>
+          </div>
         </div>
         <div class="cart-modal-body" id="cart-modal-body"></div>
         <div class="cart-modal-footer" id="cart-modal-footer"></div>
@@ -197,6 +200,8 @@ async function renderCartModal() {
   if (!body || !footer) return;
 
   if (state.cart.length === 0) {
+    const clearButton = document.getElementById('cart-clear-btn');
+    if (clearButton) clearButton.hidden = true;
     body.innerHTML = `
       <div class="cart-empty">
         ${getIcon('shopping-bag')}
@@ -207,6 +212,9 @@ async function renderCartModal() {
     footer.innerHTML = '';
     return;
   }
+
+  const clearButton = document.getElementById('cart-clear-btn');
+  if (clearButton) clearButton.hidden = false;
 
   body.innerHTML = `
     <div class="loading-state">
@@ -234,10 +242,10 @@ async function renderCartModal() {
     const lineTotal = unitPrice * item.qty;
     total += lineTotal;
     return `
-      <div class="cart-modal-item" data-id="${product.id}" data-size="${item.size || ''}">
+      <div class="cart-modal-item" data-id="${product.id}" data-size="${item.size || ''}" role="link" tabindex="0" aria-label="View ${product.name}">
         <img src="${assetPath(product.image)}" alt="${product.name}">
         <div class="cart-modal-item-info">
-          <h4>${product.name}</h4>
+          <h4><a class="cart-product-link" href="${pagePath('product.html')}?id=${encodeURIComponent(product.id)}">${product.name}</a></h4>
           ${item.size ? `<span class="cart-modal-item-size">Size: ${item.size}</span>` : ''}
           <span class="cart-modal-item-price">${formatPrice(unitPrice)}</span>
           <div class="cart-qty-control">
@@ -252,6 +260,18 @@ async function renderCartModal() {
   }).join('');
 
   body.innerHTML = rows;
+  body.querySelectorAll('.cart-modal-item').forEach(row => {
+    const openProduct = event => {
+      if (event.target.closest('button, a, input, select, textarea')) return;
+      window.location.href = `${pagePath('product.html')}?id=${encodeURIComponent(row.dataset.id)}`;
+    };
+    row.addEventListener('click', openProduct);
+    row.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openProduct(event);
+    });
+  });
   footer.innerHTML = `
     <div class="cart-modal-total">
       <span>Subtotal</span>
@@ -305,4 +325,28 @@ function removeFromCart(productId, size) {
   updateCartBadge();
   renderCartModal();
   showToast('Item removed from cart', 'success');
+}
+
+async function clearCart() {
+  if (state.cart.length === 0) return;
+  if (!window.confirm('Remove all items from your cart?')) return;
+
+  if (state.currentUser) {
+    const { error } = await supabase
+      .from('rm_store_cart_items')
+      .delete()
+      .eq('user_id', state.currentUser.id);
+
+    if (error) {
+      console.error('Failed to clear cart from Supabase:', error);
+      showToast('Could not clear your cart. Please try again.', 'error');
+      return;
+    }
+  }
+
+  state.cart = [];
+  saveCartToLocalStorage();
+  updateCartBadge();
+  renderCartModal();
+  showToast('Cart cleared', 'success');
 }

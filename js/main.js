@@ -74,6 +74,51 @@ document.addEventListener('DOMContentLoaded', () => {
    rm_store_schema.sql — catalog tables are public-read).
    ============================================ */
 
+const FALLBACK_SHOES = [
+  { id: 'yard-airlift-runner', name: 'Airlift Runner', category: 'running', collection: 'performance', description: 'Lightweight mesh runners built for daily miles and easy movement.', price: 890, image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#d7e3ed', '#24272b'], sizes: ['38', '39', '40', '41', '42', '43', '44'], rating: 4.8, reviews: 0, is_new: true },
+  { id: 'yard-court-classic', name: 'Court Classic', category: 'lifestyle', collection: 'court', description: 'A clean leather-look court sneaker with a timeless low profile.', price: 760, image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#f3f0e9', '#1d2831'], sizes: ['38', '39', '40', '41', '42', '43', '44'], rating: 4.7, reviews: 0, is_new: true },
+  { id: 'yard-velocity-knit', name: 'Velocity Knit', category: 'running', collection: 'performance', description: 'Breathable knit uppers and cushioned support for your training rotation.', price: 980, image: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#dce4e0', '#6c655d'], sizes: ['38', '39', '40', '41', '42', '43', '44'], rating: 4.9, reviews: 0, is_new: true },
+  { id: 'yard-redline-low', name: 'Redline Low', category: 'men', collection: 'street', description: 'A bold red street sneaker made to stand out from the first step.', price: 840, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#dc302e', '#181818'], sizes: ['38', '39', '40', '41', '42', '43', '44'], rating: 4.8, reviews: 0, is_new: false },
+  { id: 'yard-trail-form', name: 'Trail Form', category: 'running', collection: 'trail', description: 'Grippy, supportive trainers for weekend trails and rougher paths.', price: 1120, image: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#5b6b55', '#c5b49b'], sizes: ['38', '39', '40', '41', '42', '43', '44'], rating: 4.6, reviews: 0, is_new: true },
+  { id: 'yard-canvas-high', name: 'Canvas High-Top', category: 'women', collection: 'street', description: 'A canvas high-top with ankle coverage and an easy everyday feel.', price: 720, image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#f0ece4', '#b94f45'], sizes: ['36', '37', '38', '39', '40', '41'], rating: 4.7, reviews: 0, is_new: false },
+  { id: 'yard-skate-deck', name: 'Deck Skate Shoe', category: 'men', collection: 'street', description: 'A low, durable skate shoe with a flat, board-ready sole.', price: 690, image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#262626', '#e7e1d7'], sizes: ['39', '40', '41', '42', '43', '44'], rating: 4.5, reviews: 0, is_new: false },
+  { id: 'yard-pulse-trainer', name: 'Pulse Trainer', category: 'women', collection: 'performance', description: 'A supportive cross-training shoe for gym sessions and busy days.', price: 940, image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#e7d6d1', '#34434a'], sizes: ['36', '37', '38', '39', '40', '41'], rating: 4.8, reviews: 0, is_new: true },
+  { id: 'yard-city-slipon', name: 'City Slip-On', category: 'lifestyle', collection: 'daily', description: 'A fuss-free slip-on sneaker for commutes, errands, and travel.', price: 640, image: 'https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#d8d1c5', '#252525'], sizes: ['36', '37', '38', '39', '40', '41', '42'], rating: 4.6, reviews: 0, is_new: false },
+  { id: 'yard-pace-walker', name: 'Pace Walker', category: 'running', collection: 'daily', description: 'Soft cushioning and a flexible sole for long days on your feet.', price: 820, image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&h=900&q=85&sat=-35', colors: ['#b8c5c6', '#e7e1d7'], sizes: ['38', '39', '40', '41', '42', '43', '44'], rating: 4.7, reviews: 0, is_new: false },
+  { id: 'yard-court-pro', name: 'Court Pro', category: 'men', collection: 'court', description: 'A stable tennis-inspired shoe with a clean court-ready silhouette.', price: 990, image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=900&h=900&q=85&sat=-35', colors: ['#f5f4ef', '#48636a'], sizes: ['39', '40', '41', '42', '43', '44'], rating: 4.8, reviews: 0, is_new: false },
+  { id: 'yard-sprint-junior', name: 'Sprint Junior', category: 'women', collection: 'performance', description: 'A lightweight everyday trainer with a flexible fit for quick steps.', price: 590, image: 'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=900&h=900&q=85', colors: ['#e5c4c0', '#d9dedb'], sizes: ['36', '37', '38', '39', '40'], rating: 4.6, reviews: 0, is_new: false }
+].map(product => ({
+  ...product,
+  images: [product.image],
+  sizePrices: {},
+  sizeStock: {},
+  stock: null,
+  is_preorder: false
+}));
+
+const FALLBACK_COLLECTIONS = [
+  { id: 'street', name: 'Street Essentials', subtitle: 'Everyday icons', description: 'Easy-to-wear sneakers for the city and beyond.', image: FALLBACK_SHOES[5].image },
+  { id: 'performance', name: 'Run & Train', subtitle: 'Made to move', description: 'Lightweight runners and supportive training shoes.', image: FALLBACK_SHOES[0].image },
+  { id: 'court', name: 'Court Classics', subtitle: 'Game ready', description: 'Court-inspired pairs with a fresh everyday edge.', image: FALLBACK_SHOES[1].image },
+  { id: 'trail', name: 'Off-Road', subtitle: 'Find your path', description: 'Grippy shoes for trails, parks, and uneven ground.', image: FALLBACK_SHOES[4].image },
+  { id: 'daily', name: 'Daily Rotation', subtitle: 'On repeat', description: 'Comfort-first pairs for all-day wear.', image: FALLBACK_SHOES[8].image }
+];
+
+function createFallbackStoreData() {
+  return {
+    site: {},
+    contact: {},
+    instagram_url: '',
+    instagram_posts: [],
+    faq: [],
+    products: FALLBACK_SHOES,
+    collections: FALLBACK_COLLECTIONS.map(collection => ({
+      ...collection,
+      product_count: FALLBACK_SHOES.filter(product => product.collection === collection.id).length
+    }))
+  };
+}
+
 // Maps an rm_store_products row onto the shape the rest of the
 // frontend already expects (product.category, product.sizePrices,
 // product.reviews, etc.) so renderProductCard/cart/checkout/etc.
@@ -101,6 +146,15 @@ function mapProductRow(row) {
   };
 }
 
+function isShoeProduct(product) {
+  const productText = `${product.name} ${product.description} ${product.category}`.toLowerCase();
+  if (/\b(shoe|sneaker|trainer|runner|footwear|boot|high-top|slip-on|skate)\b/.test(productText)) return true;
+
+  const apparelTerms = /\b(shirt|hood|hoodie|coat|jacket|pants|trouser|tote|bag|blazer|tee|socks|accessories|apparel)\b/;
+  const numericSizes = product.sizes.length > 0 && product.sizes.every(size => /^\d+(\.\d+)?$/.test(String(size).trim()));
+  return numericSizes && !apparelTerms.test(productText);
+}
+
 async function loadData(forceRefresh = false) {
   if (state.data && !forceRefresh) return state.data;
 
@@ -126,6 +180,8 @@ async function loadData(forceRefresh = false) {
     if (instagramErr) throw instagramErr;
 
     const mappedProducts = (products || []).map(mapProductRow);
+    const shoeProducts = mappedProducts.filter(isShoeProduct);
+    const catalogProducts = shoeProducts.length ? shoeProducts : FALLBACK_SHOES;
 
     const settings = {};
     (settingsRows || []).forEach(row => { settings[row.key] = row.value; });
@@ -136,17 +192,18 @@ async function loadData(forceRefresh = false) {
       instagram_url: settings.instagram_url || '',
       instagram_posts: (instagramRows || []).map(r => r.url),
       faq: faq || [],
-      products: mappedProducts,
-      collections: (collections || []).map(c => ({
+      products: catalogProducts,
+      collections: shoeProducts.length ? (collections || []).map(c => ({
         ...c,
-        product_count: mappedProducts.filter(p => p.collection === c.id).length
-      }))
+        product_count: shoeProducts.filter(p => p.collection === c.id).length
+      })) : createFallbackStoreData().collections
     };
 
     return state.data;
   } catch (error) {
     console.error('Failed to load data from Supabase:', error);
-    return null;
+    state.data = createFallbackStoreData();
+    return state.data;
   }
 }
 
@@ -640,7 +697,7 @@ function initSearchOverlay() {
       <div class="search-panel">
         <div class="search-input-wrap">
           ${getIcon('search')}
-          <input type="text" id="search-input" placeholder="Search for clothing, accessories..." autocomplete="off">
+          <input type="text" id="search-input" placeholder="Search sneakers..." autocomplete="off">
           <button class="search-close-btn" aria-label="Close search">${getIcon('close')}</button>
         </div>
         <div class="search-results" id="search-results"></div>

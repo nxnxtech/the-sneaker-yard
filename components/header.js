@@ -10,13 +10,13 @@
 function getHeaderComponentHtml(homeHref, pagePrefix) {
   return `
 <nav class="nav-glass" id="navbar">
-  <a href="${homeHref}" class="logo">Roger McDaniels</a>
+  <a href="${homeHref}" class="logo">The Sneaker Yard</a>
   <ul class="nav-links">
     <li><a href="${homeHref}" data-nav="index">Home</a></li>
     <li><a href="${pagePrefix}shop.html" data-nav="shop">Shop</a></li>
     <li><a href="${pagePrefix}new-arrivals.html" data-nav="new-arrivals">New Arrivals</a></li>
     <li><a href="${pagePrefix}collections.html" data-nav="collections">Collections</a></li>
-    <li><a href="${pagePrefix}about.html" data-nav="about">RM</a></li>
+    <li><a href="${pagePrefix}about.html" data-nav="about">Our Story</a></li>
     <li><a href="${pagePrefix}contact.html" data-nav="contact">Contact</a></li>
   </ul>
   <div class="nav-icons">

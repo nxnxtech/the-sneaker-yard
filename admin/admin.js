@@ -1466,7 +1466,7 @@ function openHelp() {
    GETTING STARTED ONBOARDING
    ============================================================ */
 const ONBOARD_SLIDES = [
-  { icon: 'sparkles', title: 'Welcome to Roger McDaniels', body: 'This is your admin dashboard for running the entire store, products, orders, users, content and settings, all in one place.' },
+  { icon: 'sparkles', title: 'Welcome to The Sneaker Yard', body: 'This is your admin dashboard for running the entire store, products, orders, users, content and settings, all in one place.' },
   { icon: 'compass', title: 'Sidebar navigation', body: 'Use the left sidebar to move between sections. Items are grouped into Catalog, Sales, People and Content so things are easy to find.' },
   { icon: 'products', title: 'Manage your catalog', body: 'Add, edit or deactivate products, organize them into categories, and group them into collections for campaigns.' },
   { icon: 'orders', title: 'Track orders', body: 'Every order shows payment status and delivery status independently, update either as it moves through fulfillment.' },

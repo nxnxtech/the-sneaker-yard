@@ -1,2 +1,2 @@
-## RM Store
-Initial commit for RM - not for everyone
+## The Sneaker Yard
+Online sneaker store for everyday wear, training, and special releases.

@@ -108,7 +108,7 @@ button {
 .hero {
   position: relative;
   min-height: 100vh;
-  background-image: url('../assets/pose/rm-pose-1.png');
+  background-image: linear-gradient(rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.46)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&h=1000&fit=crop');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -608,10 +608,10 @@ button {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .badge svg {
@@ -619,6 +619,7 @@ button {
   height: 14px;
   color: #f59e0b;
 }
+
 
 .tag {
   display: inline-flex;
@@ -1975,6 +1976,38 @@ button {
   height: 20px;
 }
 
+.cart-modal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.cart-clear-btn:hover {
+  color: var(--danger);
+  background: rgba(239,68,68,0.08);
+}
+
+.cart-clear-btn[hidden] {
+  display: none;
+}
+
+.cart-clear-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
 .cart-modal-close {
   width: 36px;
   height: 36px;
@@ -2009,6 +2042,22 @@ button {
   align-items: center;
   padding-bottom: 16px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+}
+
+.cart-modal-item:focus-visible {
+  outline: 2px solid var(--text-dark);
+  outline-offset: 3px;
+}
+
+.cart-product-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cart-product-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .cart-modal-item img {
@@ -2415,7 +2464,29 @@ button {
 .comments-section {
   max-width: 900px;
   margin: 0 auto;
-  padding: 60px 40px;
+  padding: 72px 40px;
+  border-top: 1px solid rgba(30, 45, 37, 0.1);
+}
+
+.community-heading {
+  flex: 1;
+}
+
+.community-eyebrow {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  margin-bottom: 8px;
+}
+
+.community-heading .section-title {
+  margin-bottom: 6px;
+}
+
+.community-intro {
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 .comments-wrap {
@@ -2611,7 +2682,7 @@ button {
 }
 
 @media (max-width: 640px) {
-  .comments-section { padding: 40px 20px; }
+  .comments-section { padding: 48px 20px; }
   .comment-form { padding: 24px 20px; }
 }
 

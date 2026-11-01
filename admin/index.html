@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roger McDaniels | Admin Dashboard</title>
+<title>The Sneaker Yard | Admin Dashboard</title>
 <link rel="stylesheet" href="main.css">
 <link rel="stylesheet" href="admin.css">
-<link rel="icon" type="image/png" href="../assets/rm-logo.jpg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -14,8 +13,13 @@
     width: 80px;
     height: 50px;
     border-radius: 10px;
+    display: flex;
     justify-content: center;
     align-items: center;
+    background: #111;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
   .password-input-wrapper {
@@ -56,13 +60,13 @@
 <div id="loginScreen" class="login-wrap">
   <div class="login-card glass-heavy">
     <div class="onboard-icon">
-    <img class="login-logo" src="../assets/rm-logo.jpg" alt="RM Logo">
+    <div class="login-logo" aria-label="The Sneaker Yard">SY</div>
     </div>
-    <h2>Roger McDaniels</h2>
+    <h2>The Sneaker Yard</h2>
     <p class="sub">Sign into admin account</p>
     <div class="field full" style="margin-bottom:12px;">
       <label>Email</label>
-      <input type="email" id="loginEmail" placeholder="you@rogermcdaniels.com">
+      <input type="email" id="loginEmail" placeholder="you@example.com">
     </div>
     <div class="field full" style="margin-bottom:18px;">
       <label>Password</label>
@@ -84,9 +88,9 @@
   <!-- Sidebar -->
   <aside class="sidebar glass" id="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-mark">RM</div>
+      <div class="brand-mark">SY</div>
       <div class="brand-text">
-        <strong>Roger McDaniels</strong>
+        <strong>The Sneaker Yard</strong>
         <span>Admin Dashboard</span>
       </div>
     </div>
@@ -140,7 +144,7 @@
         <button class="btn-icon" id="mobileMenuBtn" onclick="document.getElementById('sidebar').classList.toggle('open')"><span class="nav-icon" data-icon="menu"></span></button>
         <div class="topbar-heading">
           <h1 id="pageTitle">Dashboard</h1>
-          <div class="topbar-sub" id="pageSub">Welcome back to Roger McDaniels</div>
+          <div class="topbar-sub" id="pageSub">Welcome back to The Sneaker Yard</div>
         </div>
       </div>
       <div class="topbar-actions">
@@ -344,7 +348,7 @@
   <div class="modal-sheet wide">
     <div class="modal-head">
       <div>
-        <h3>Getting Started with Roger McDaniels</h3>
+        <h3>Getting Started with The Sneaker Yard</h3>
         <p>A quick tour of your admin dashboard</p>
       </div>
       <div class="close-x" onclick="closeOnboarding()"><span class="nav-icon" data-icon="close"></span></div>
